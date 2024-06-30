@@ -73,8 +73,6 @@ jobs:
 
     - name: Generate docs
       run: |
-        # TODO: fix this when upstream version is corrected
-        rm -r extensions/sqlite_scanner
         ./scripts/fetch_extensions.sh ./duckdb
         ./scripts/generate_md.sh ./duckdb
 

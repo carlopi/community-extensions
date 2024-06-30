@@ -8,6 +8,7 @@
 # note: extensions are simply uploaded to GitHub actions, deploying the extensions is done a separate step. More info on
 #       this can be found in https://github.com/duckdb/extension-template
 
+
 name: Extension distribution
 on:
   workflow_call:

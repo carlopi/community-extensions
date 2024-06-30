@@ -61,8 +61,6 @@ jobs:
       ref: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_REF }}
 
   docs:
-    needs:
-      - deploy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4

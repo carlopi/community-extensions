@@ -3,7 +3,7 @@ extension:
   description: Provides a hello world example demo
   version: 0.0.1
   language: C++
-  excluded_platforms: "windows_amd64_rtools"
+  excluded_platforms: "windows_amd64_rtools;windows_amd64"
   build: cmake
   license: MIT
   maintainers:

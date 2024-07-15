@@ -1,0 +1,35 @@
+#
+# Reusable workflow that deploys the artifacts produced by .github/workflows/_extension_distribution.yml
+#
+# Note: this workflow can be used to deploy an extension from a GH artifact. It is intended for Out-of-tree
+#       extensions that live the duckdb GitHub organisation (only repo's within the same organisation can share secrets
+#       through reusable workflows)
+
+name: Caches cleanup
+on:
+  workflow_call:
+    inputs:
+      # The name of the extension
+      pattern:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      # The name of the extension
+      pattern:
+        required: true
+        type: string
+
+jobs:
+  clean_caches:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        shell: bash
+        env:
+          CLOUDFLARE_CACHE_PURGE_TOKEN: ${{ secrets.CLOUDFLARE_CACHE_PURGE_TOKEN }}
+          PATTERN: "${{ inputs.pattern }}"
+          DUCKDB_DEPLOY_SCRIPT_MODE: for_real
+        run: |
+          bash ./scripts/clean_caches.sh duckdb-community-extensions community-extensions "$PATTERN" 

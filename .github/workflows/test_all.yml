@@ -1,0 +1,13 @@
+name: Community Extension Test All
+on:
+  workflow_dispatch:
+    inputs:
+      duckdb_version:
+        type: string
+
+jobs:
+  test_all:
+    uses: ./.github/workflows/build.yml 
+    with:
+      extension_name: 'prql'
+      duckdb_version: ${{ inputs.duckdb_version }}

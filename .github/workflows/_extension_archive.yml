@@ -1,0 +1,51 @@
+#
+# Reusable workflow that deploys the artifacts produced by .github/workflows/_extension_distribution.yml
+#
+# Note: this workflow can be used to deploy an extension from a GH artifact. It is intended for Out-of-tree
+#       extensions that live the duckdb GitHub organisation (only repo's within the same organisation can share secrets
+#       through reusable workflows)
+
+
+name: Extension Deployment
+on:
+  workflow_call:
+    inputs:
+      # The name of the extension
+      extension_name:
+        required: true
+        type: string
+      repository:
+        required: false
+        type: string
+        default: ""
+      ref:
+        required: false
+        type: string
+        default: ""
+jobs:
+  fetch_repo:
+    name: Fetch repo and save
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+          submodules: 'true'
+          path: ./repo
+
+      - name: Checkout DuckDB to version
+        run: |
+          zip -r ${{ inputs.extension_name }}.zip repo
+
+      - name: Deploy
+        shell: bash
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.DUCKDB_COMMUNITY_EXTENSION_S3_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.DUCKDB_COMMUNITY_EXTENSION_S3_SECRET }}
+          AWS_DEFAULT_REGION: ${{ secrets.S3_DUCKDB_ORG_REGION }}
+          BUCKET_NAME: duckdb-community-extensions
+        run: |
+          python3 -m pip install pip awscli
+          aws s3 cp ${{ inputs.extension_name }}.zip s3://$BUCKET_NAME/archieved_repo/${{ inputs.extension_name }}/repo_${{ inputs.ref }}.zip

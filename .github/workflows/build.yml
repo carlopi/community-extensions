@@ -123,7 +123,6 @@ jobs:
       repository: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_GITHUB }}
       ref: ${{ needs.prepare.outputs.COMMUNITY_EXTENSION_REF }}
 
-
   deploy:
     needs: 
       - prepare

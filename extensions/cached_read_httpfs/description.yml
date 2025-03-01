@@ -18,7 +18,7 @@ docs:
   hello_world: |
     SELECT cache_httpfs_get_cache_size();
   extended_description: |
-    This extension adds a read cache filesystem to DuckDB, which acts as a wrapper of httpfs extention. 
+    This extension adds a read cache filesystem to DuckDB, which acts as a wrapper of httpfs extention.
     It supports a few key features:
     - Supports both metadata cache and data block cache
     - Supports both on-disk cache and in-memory cache, with block size and cache mode tunable
